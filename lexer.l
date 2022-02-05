@@ -9,32 +9,34 @@ digit   [0-9]
 letter  [a-zA-Z]
 
 %%
-"if"                            { printf("IF\n"); return If; }
-"then"                          { printf("THEN\n"); return Then; }
-"else"                          { printf("ELSE\n"); return Else; }
-"<"                             { printf("LESS_THAN\n"); return LessThan; }
-">"                             { printf("GREATHER_THAN\n"); return GreaterThan; }
-"<="                            { printf("LESS_OR_EQUAL\n"); return LessOrEqual; }
-">="                            { printf("GREATHER_OR_EQUAL\n"); return GreaterOrEqual; }
-"="                             { printf("EQUAL\n"); return Equal; }
-"<>"                            { printf("NOT_EQUAL\n"); return NotEqual; }
-{letter}({letter}|{digit})*     { printf("IDENTIFIER\n"); setIdentifier(yytext); printf("%s\n", getIdentifier()); return Identifier; }
-{digit}+                        { printf("NUMBER\n"); printf("----%d\n", atoi(yytext)); setNum(atoi(yytext)); return Number; }
+"if"                            { printf("IF\n"); setType(If); }
+"then"                          { printf("THEN\n"); setType(Then); }
+"else"                          { printf("ELSE\n"); setType(Else); }
+"<"                             { printf("LESS_THAN\n"); setType(LessThan); }
+">"                             { printf("GREATHER_THAN\n"); setType(GreaterThan); }
+"<="                            { printf("LESS_OR_EQUAL\n"); setType(LessOrEqual); }
+">="                            { printf("GREATHER_OR_EQUAL\n"); setType(GreaterOrEqual); }
+"="                             { printf("EQUAL\n"); setType(Equal); }
+"<>"                            { printf("NOT_EQUAL\n"); setType(NotEqual); }
+{letter}({letter}|{digit})*     { printf("<IDENTIFIER, %s>\n", yytext); setIdentifier(yytext); printf("%s\n", getIdentifier()); setType(Identifier); }
+{digit}+                        { printf("<NUMBER, %s>\n", yytext); setNum(atoi(yytext)); setType(Number); }
 [ \t\n\r]            /* skip whitespace */
 .                    { printf("Unknown character [%c]\n",yytext[0]); }
 %%
 
 int yywrap(void){return 1;}
 
-main( argc, argv )
-int argc;
-char **argv;
-    {
-    ++argv, --argc;  /* skip over program name */
-    if ( argc > 0 )
-            yyin = fopen( argv[0], "r" );
-    else
-            yyin = stdin;
+int main(int argc, char *argv[]) {
+    char fileName[64];
+    printf("Digite o nome do arquivo de entrada: ");
+    scanf("%s", fileName);
+
+    yyin = fopen(fileName, "r");
+    if (!yyin) {
+        printf("O arquivo %s nao existe!\n", fileName);
+        exit(EXIT_FAILURE);
+    }
 
     yylex();
-    }
+    return 0;
+}

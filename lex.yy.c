@@ -736,57 +736,57 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 12 "lexer.l"
-{ printf("IF\n"); return If; }
+{ printf("IF\n"); setType(If); }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 13 "lexer.l"
-{ printf("THEN\n"); return Then; }
+{ printf("THEN\n"); setType(Then); }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 14 "lexer.l"
-{ printf("ELSE\n"); return Else; }
+{ printf("ELSE\n"); setType(Else); }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 15 "lexer.l"
-{ printf("LESS_THAN\n"); return LessThan; }
+{ printf("LESS_THAN\n"); setType(LessThan); }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 16 "lexer.l"
-{ printf("GREATHER_THAN\n"); return GreaterThan; }
+{ printf("GREATHER_THAN\n"); setType(GreaterThan); }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 17 "lexer.l"
-{ printf("LESS_OR_EQUAL\n"); return LessOrEqual; }
+{ printf("LESS_OR_EQUAL\n"); setType(LessOrEqual); }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 18 "lexer.l"
-{ printf("GREATHER_OR_EQUAL\n"); return GreaterOrEqual; }
+{ printf("GREATHER_OR_EQUAL\n"); setType(GreaterOrEqual); }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 19 "lexer.l"
-{ printf("EQUAL\n"); return Equal; }
+{ printf("EQUAL\n"); setType(Equal); }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 20 "lexer.l"
-{ printf("NOT_EQUAL\n"); return NotEqual; }
+{ printf("NOT_EQUAL\n"); setType(NotEqual); }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 21 "lexer.l"
-{ printf("IDENTIFIER\n"); setIdentifier(yytext); printf("%s\n", getIdentifier()); return Identifier; }
+{ printf("<IDENTIFIER, %s>\n", yytext); setIdentifier(yytext); printf("%s\n", getIdentifier()); setType(Identifier); }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 22 "lexer.l"
-{ printf("NUMBER\n"); printf("----%d\n", atoi(yytext)); setNum(atoi(yytext)); return Number; }
+{ printf("<NUMBER, %s>\n", yytext); setNum(atoi(yytext)); setType(Number); }
 	YY_BREAK
 case 12:
 /* rule 12 can match eol */
@@ -1814,15 +1814,17 @@ void yyfree (void * ptr )
 
 int yywrap(void){return 1;}
 
-main( argc, argv )
-int argc;
-char **argv;
-    {
-    ++argv, --argc;  /* skip over program name */
-    if ( argc > 0 )
-            yyin = fopen( argv[0], "r" );
-    else
-            yyin = stdin;
+int main(int argc, char *argv[]) {
+    char fileName[64];
+    printf("Digite o nome do arquivo de entrada: ");
+    scanf("%s", fileName);
+
+    yyin = fopen(fileName, "r");
+    if (!yyin) {
+        printf("O arquivo %s nao existe!\n", fileName);
+        exit(EXIT_FAILURE);
+    }
 
     yylex();
-    }
+    return 0;
+}

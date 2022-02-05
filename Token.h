@@ -17,5 +17,7 @@ void Token_delete(Token *token);
 
 void setNum(int value);
 void setIdentifier(char *value);
+void setType(TokenType type);
 int getNum();
 char *getIdentifier();
+TokenType getType();

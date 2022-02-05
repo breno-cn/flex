@@ -5,6 +5,7 @@
 
 int num = 0;
 char identifierBuff[BUFFER_SIZE];
+TokenType _type;
 
 Token *Token_new(TokenType type, void *value) {
     Token *token = malloc(sizeof(Token));
@@ -45,4 +46,13 @@ int getNum() {
 
 char *getIdentifier() {
     return identifierBuff;
+}
+
+void setType(TokenType type) {
+    _type = type;
+
+}
+
+TokenType getType() {
+    return _type;
 }
