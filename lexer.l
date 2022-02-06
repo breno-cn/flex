@@ -18,9 +18,10 @@ letter  [a-zA-Z]
 ">="                            { printf("GREATHER_OR_EQUAL\n"); setType(GreaterOrEqual); }
 "="                             { printf("EQUAL\n"); setType(Equal); }
 "<>"                            { printf("NOT_EQUAL\n"); setType(NotEqual); }
-{letter}({letter}|{digit})*     { printf("<IDENTIFIER, %s>\n", yytext); setIdentifier(yytext); printf("%s\n", getIdentifier()); setType(Identifier); }
+{letter}({letter}|{digit})*     { printf("<IDENTIFIER, %s>\n", yytext); setIdentifier(yytext); setType(Identifier); }
 {digit}+                        { printf("<NUMBER, %s>\n", yytext); setNum(atoi(yytext)); setType(Number); }
 [ \t\n\r]            /* skip whitespace */
+<<EOF>>                         { printf("EOF\n"); return 0; }
 .                    { printf("Unknown character [%c]\n",yytext[0]); }
 %%
 

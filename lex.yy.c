@@ -781,7 +781,7 @@ YY_RULE_SETUP
 case 10:
 YY_RULE_SETUP
 #line 21 "lexer.l"
-{ printf("<IDENTIFIER, %s>\n", yytext); setIdentifier(yytext); printf("%s\n", getIdentifier()); setType(Identifier); }
+{ printf("<IDENTIFIER, %s>\n", yytext); setIdentifier(yytext); setType(Identifier); }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
@@ -794,19 +794,21 @@ YY_RULE_SETUP
 #line 23 "lexer.l"
 /* skip whitespace */
 	YY_BREAK
+case YY_STATE_EOF(INITIAL):
+#line 24 "lexer.l"
+{ printf("EOF\n"); return 0; }
+	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 24 "lexer.l"
+#line 25 "lexer.l"
 { printf("Unknown character [%c]\n",yytext[0]); }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 25 "lexer.l"
+#line 26 "lexer.l"
 ECHO;
 	YY_BREAK
-#line 808 "lex.yy.c"
-case YY_STATE_EOF(INITIAL):
-	yyterminate();
+#line 812 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1809,7 +1811,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 25 "lexer.l"
+#line 26 "lexer.l"
 
 
 int yywrap(void){return 1;}
